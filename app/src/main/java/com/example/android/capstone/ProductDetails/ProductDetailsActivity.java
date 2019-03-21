@@ -23,17 +23,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         if(intent.hasExtra(getString(R.string.selected_product))){
             mSelectedProduct=(Product)intent.getSerializableExtra("selected_product");
-            Log.d(" basmaaaSlected", String.valueOf(intent.getData()));
+            Log.d(" Intent", String.valueOf(intent.getData()));
 
         }else{
-            Log.d(" basmaaaSlected1", String.valueOf(mSelectedProduct.getName()));
+            Log.d(" SelectedProduct1", String.valueOf(mSelectedProduct.getName()));
 
         }
 //        Log.d(" basmaaaSlected2", String.valueOf(mSelectedProduct.getName()));
 
         ProductDetailsFragment productDetailsFragment=new ProductDetailsFragment();
         Bundle args=new Bundle();
-        args.putString("selected_product", String.valueOf(mSelectedProduct));
+        args.putString("selected_product2", String.valueOf(mSelectedProduct));
         productDetailsFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

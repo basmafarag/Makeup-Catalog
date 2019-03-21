@@ -58,10 +58,10 @@ public class ProductsActivity extends AppCompatActivity implements ProductsFragm
 
         Intent intent = new Intent(this, ProductDetailsActivity.class);
         selectedProduct=Categories.get(mProductType).get(Integer.parseInt(mProductIndex));
-        Log.d(" basmaaaaaaa", selectedProduct.getName());
+        Log.d(" SelectedProduct2", selectedProduct.getName());
 
         intent.putExtra(getString(R.string.selected_product),selectedProduct);
-        Log.d(" basmaaaaaaa", selectedProduct.getName());
+        Log.d(" SelectedProduct3", selectedProduct.getName());
 
         startActivity(intent);
 
