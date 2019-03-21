@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "546250788806",
+    "firebase_url": "https://makeup-catalog-76a8c.firebaseio.com",
+    "project_id": "makeup-catalog-76a8c",
+    "storage_bucket": "makeup-catalog-76a8c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:546250788806:android:be1136ab0854db82",
+        "android_client_info": {
+          "package_name": "com.example.android.capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "546250788806-tic111s2f5591i1scck6kpvucgkov7sl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.capstone",
+            "certificate_hash": "adaabbb27ef29f993e3544fbd0dc656ee00256f1"
+          }
+        },
+        {
+          "client_id": "546250788806-kfq32aomir4j08k6hfvv9alljegjqjkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9MTAG4HJ0Iqi5kxgqNel4Dxck1ZCzquU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "546250788806-kfq32aomir4j08k6hfvv9alljegjqjkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
