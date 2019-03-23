@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.net.Uri;
+import android.content.Intent;
 import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
-
+import android.view.View.OnClickListener;
 import java.io.Serializable;
-
+import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
 public class ProductDetailsFragment extends Fragment {
@@ -36,7 +37,7 @@ public class ProductDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_product_details,container,false);
-        product=(Product)getArguments().getSerializable("selected_product");
+        product=(Product)getArguments().getParcelable("selected_product");
 
         productName=rootView.findViewById(R.id.tv_product_title);
         productPrice=rootView.findViewById(R.id.tv_price);
@@ -48,26 +49,37 @@ public class ProductDetailsFragment extends Fragment {
         Log.d("heloo else ", String.valueOf(product));
 
         if(savedInstanceState!=null){
-            product=(Product)savedInstanceState.getSerializable("selected_product");
+            product=savedInstanceState.getParcelable("selected_product");
         }
         if(product!=null) {
             productName.setText(product.getName());
 
-            if ((product.getPrice_sign() != null)) {
+            if ((product.getPrice_sign() != null)&& (product.getPrice() !=null) ) {
                 productPrice.setText(product.getPrice()+ " "+product.getPrice_sign() );
-            }else{
+            }else if(product.getPrice()!=null){
 
-                productPrice.setText((int) product.getPrice());
+                productPrice.setText((product.getPrice()).toString());
 
             }
         if(product.getDescripition()!=null){
             productDescription.setText(product.getDescripition());
         }
         if(product.getImage_link()!=null){
-            //Picasso.get().load(product.getImage_link()).into(productImage);
+            Picasso.get().load(product.getImage_link()).into(productImage);
         }
 
         }
+        if(product.getProduct_link()!=null) {
+            buyNow.setOnClickListener(new OnClickListener() {
+                public void onClick(View arg0) {
+                    Intent viewIntent =
+                            new Intent("android.intent.action.VIEW",
+                                    Uri.parse(product.getProduct_link()));
+                    startActivity(viewIntent);
+                }
+            });
+        }
+
         return rootView;
 
     }
@@ -75,7 +87,7 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("selected_product", (Serializable) product);
+        outState.putParcelable("selected_product", product);
 
 
     }

@@ -22,7 +22,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         Intent intent=getIntent();
 
         if(intent.hasExtra(getString(R.string.selected_product))){
-            mSelectedProduct=(Product)intent.getSerializableExtra("selected_product");
+            mSelectedProduct=intent.getParcelableExtra("selected_product");
             Log.d(" Intent", String.valueOf(intent.getData()));
 
         }else{
@@ -33,7 +33,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         ProductDetailsFragment productDetailsFragment=new ProductDetailsFragment();
         Bundle args=new Bundle();
-        args.putString("selected_product2", String.valueOf(mSelectedProduct));
+        args.putParcelable("selected_product", mSelectedProduct);
         productDetailsFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -49,6 +49,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(getString(R.string.selected_product), String.valueOf(mSelectedProduct));
+        outState.putParcelable(getString(R.string.selected_product), mSelectedProduct);
     }
 }

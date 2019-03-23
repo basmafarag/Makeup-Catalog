@@ -98,7 +98,7 @@ public class Product implements Parcelable {
         return name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
