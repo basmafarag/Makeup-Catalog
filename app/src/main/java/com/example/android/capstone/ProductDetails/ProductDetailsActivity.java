@@ -65,7 +65,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
 
     }
 
-/* FirebaseDatabase database = FirebaseDatabase.getInstance();
+        /* FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("message");
 
         myRef.setValue("Hello, World!");

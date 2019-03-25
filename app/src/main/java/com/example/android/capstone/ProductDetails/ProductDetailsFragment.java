@@ -16,6 +16,9 @@ import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
 import android.view.View.OnClickListener;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +46,9 @@ public class ProductDetailsFragment extends Fragment {
     ImageView productImage;
     Button buyNow;
     Button favorites;
+
+    public FirebaseAuth mAuth;
+
     public ProductDetailsFragment() {
 
     }
@@ -100,14 +106,13 @@ public class ProductDetailsFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    Log.d("notadded ", String.valueOf(product.getName()));
-                }else {
-                    Firebase rootRef = new Firebase("https://makeup-catalog-76a8c.firebaseio.com/");
-                    Firebase userRef = rootRef.child("users/" + rootRef.getAuth().getUid());
-                    userRef.child("Product").setValue(product);
-                    Log.d("added ", String.valueOf(product.getName()));
-                }
+
+                String User_Id=mAuth.getCurrentUser().getUid();
+                DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
+                Map newPost=new HashMap<>();
+                newPost.put("age","basma2");
+                current_user_db.setValue(newPost);
+
             }
         });
         return rootView;

@@ -31,6 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
 public class authActivity extends AppCompatActivity implements
         View.OnClickListener {
     private static final String TAG = "EmailPassword";
@@ -114,6 +116,13 @@ public class authActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            String User_Id=mAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
+                            Map newPost=new HashMap<>();
+                            newPost.put("Username","basma2");
+                            current_user_db.setValue(newPost);
+
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -155,6 +164,12 @@ public class authActivity extends AppCompatActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            String User_Id=mAuth.getCurrentUser().getUid();
+                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
+                            Map newPost=new HashMap<>();
+                            newPost.put("Username","basma2");
+                            current_user_db.setValue(newPost);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
