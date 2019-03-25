@@ -12,7 +12,11 @@ import com.example.android.capstone.R;
 
 import java.util.HashMap;
 import java.util.List;
-
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 public class ProductsActivity extends AppCompatActivity implements ProductsFragment.OnProductClickListener{
 
     public static String mProductType;
@@ -48,20 +52,24 @@ public class ProductsActivity extends AppCompatActivity implements ProductsFragm
             }
 
             }
+            setTitle(mProductType);
+
+       /* FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World!");
+        */
         }
 
     @Override
     public void onProductSelected(String ProductIndex) {
 
         this.mProductIndex=ProductIndex;
-        //TODO MASTERDETAILS
 
         Intent intent = new Intent(this, ProductDetailsActivity.class);
         selectedProduct=Categories.get(mProductType).get(Integer.parseInt(mProductIndex));
-        Log.d(" SelectedProduct2", selectedProduct.getName());
 
         intent.putExtra(getString(R.string.selected_product),selectedProduct);
-        Log.d(" SelectedProduct3", selectedProduct.getName());
 
         startActivity(intent);
 

@@ -18,6 +18,8 @@ import com.example.android.capstone.R;
 import com.example.android.capstone.Retrofit.ApiService;
 import com.example.android.capstone.Retrofit.RetroClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +73,9 @@ public class MainActivity extends AppCompatActivity implements
         //}
         findViewById(R.id.signOutButton).setOnClickListener(this);
 
+
     }
+
     private void initSwipeContainerRefreshListener() {
         swipeContainer=findViewById(R.id.swipe_refresh_layout);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

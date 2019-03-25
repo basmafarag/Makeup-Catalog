@@ -25,6 +25,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class authActivity extends AppCompatActivity implements
         View.OnClickListener {
@@ -39,7 +44,7 @@ public class authActivity extends AppCompatActivity implements
     private GoogleSignInClient mGoogleSignInClient;
 
     // [START declare_auth]
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     // [END declare_auth]
 
     @Override
@@ -71,7 +76,6 @@ public class authActivity extends AppCompatActivity implements
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
-
 
     }
     private void GooglesignIn() {
@@ -128,6 +132,8 @@ public class authActivity extends AppCompatActivity implements
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+      //  Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
+
         updateUI(currentUser);
     }
     // [END on_start_check_user]
@@ -236,7 +242,8 @@ public class authActivity extends AppCompatActivity implements
      //   hideProgressDialog();
         if (user != null) {
             Intent intent = new Intent(authActivity.this, MainActivity.class);
-           // intent.putExtra(getString(R.string.recipes_tag), recipe);
+            intent.putExtra("Current_User",mAuth.getCurrentUser());
+             Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
             startActivity(intent);
             finish();
 

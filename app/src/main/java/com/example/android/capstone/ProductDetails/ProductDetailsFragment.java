@@ -16,8 +16,23 @@ import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
 import android.view.View.OnClickListener;
 import java.io.Serializable;
+import android.content.Intent;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+import com.firebase.client.Firebase;
+import com.google.firebase.FirebaseApp;
 
 public class ProductDetailsFragment extends Fragment {
 
@@ -28,7 +43,6 @@ public class ProductDetailsFragment extends Fragment {
     ImageView productImage;
     Button buyNow;
     Button favorites;
-
     public ProductDetailsFragment() {
 
     }
@@ -36,6 +50,8 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView=inflater.inflate(R.layout.fragment_product_details,container,false);
         product=(Product)getArguments().getParcelable("selected_product");
 
@@ -46,7 +62,6 @@ public class ProductDetailsFragment extends Fragment {
         buyNow=rootView.findViewById(R.id.bv_buy_button);
         favorites=rootView.findViewById(R.id.bv_favourite_button);
 
-        Log.d("heloo else ", String.valueOf(product));
 
         if(savedInstanceState!=null){
             product=savedInstanceState.getParcelable("selected_product");
@@ -80,6 +95,21 @@ public class ProductDetailsFragment extends Fragment {
             });
         }
 
+        //CurrentUser=intent.ge
+        favorites.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Log.d("notadded ", String.valueOf(product.getName()));
+                }else {
+                    Firebase rootRef = new Firebase("https://makeup-catalog-76a8c.firebaseio.com/");
+                    Firebase userRef = rootRef.child("users/" + rootRef.getAuth().getUid());
+                    userRef.child("Product").setValue(product);
+                    Log.d("added ", String.valueOf(product.getName()));
+                }
+            }
+        });
         return rootView;
 
     }
@@ -91,4 +121,6 @@ public class ProductDetailsFragment extends Fragment {
 
 
     }
+
+
 }
