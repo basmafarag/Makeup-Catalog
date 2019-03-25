@@ -43,12 +43,12 @@ public class ProductDetailsActivity extends AppCompatActivity{
             Log.d(" SelectedProduct1", String.valueOf(mSelectedProduct.getName()));
 
         }
-        //CurrentUser=intent.getParcelableExtra("Current_User");
 
-        if(!FirebaseApp.getApps(this).isEmpty()) {
-            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        
+        if(intent.hasExtra("Current_User")){
+            //            intent.putExtra("Current_User",mAuth.getCurrentUser());
+            //CurrentUser=intent.getExtras("")
         }
-
         ProductDetailsFragment productDetailsFragment=new ProductDetailsFragment();
         Bundle args=new Bundle();
         args.putParcelable("selected_product", mSelectedProduct);
@@ -62,6 +62,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
 
         setContentView(R.layout.activity_product_details);
         //.setOnClickListener(new View.OnClickListener() {
+
 
     }
 
@@ -78,4 +79,6 @@ public class ProductDetailsActivity extends AppCompatActivity{
     }
 
 
+    public void setArguments(Bundle bundle) {
+    }
 }

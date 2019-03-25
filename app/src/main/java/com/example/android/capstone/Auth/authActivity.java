@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.capstone.ProductDetails.ProductDetailsActivity;
+import com.example.android.capstone.ProductDetails.ProductDetailsFragment;
 import com.example.android.capstone.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -256,6 +258,13 @@ public class authActivity extends AppCompatActivity implements
     private void updateUI(FirebaseUser user) {
      //   hideProgressDialog();
         if (user != null) {
+
+           /* ProductDetailsFragment productDetailsFragment =new ProductDetailsFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("Current_User", String.valueOf(mAuth.getCurrentUser().getUid()));
+            productDetailsFragment.setArguments(bundle);
+            */
+
             Intent intent = new Intent(authActivity.this, MainActivity.class);
             intent.putExtra("Current_User",mAuth.getCurrentUser());
              Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));

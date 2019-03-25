@@ -68,7 +68,7 @@ public class ProductDetailsFragment extends Fragment {
         buyNow=rootView.findViewById(R.id.bv_buy_button);
         favorites=rootView.findViewById(R.id.bv_favourite_button);
 
-
+        mAuth =FirebaseAuth.getInstance();
         if(savedInstanceState!=null){
             product=savedInstanceState.getParcelable("selected_product");
         }
@@ -103,15 +103,19 @@ public class ProductDetailsFragment extends Fragment {
 
         //CurrentUser=intent.ge
         favorites.setOnClickListener(new View.OnClickListener() {
-
+//            intent.putExtra("Current_User",mAuth.getCurrentUser());
             @Override
             public void onClick(View v) {
 
+                //Bundle bundle=getArguments();
+                //String User_Id=bundle.getString("Current_User");
+
                 String User_Id=mAuth.getCurrentUser().getUid();
-                DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
-                Map newPost=new HashMap<>();
-                newPost.put("age","basma2");
-                current_user_db.setValue(newPost);
+                DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
+               // Map newPost=new HashMap<>();
+                //newPost.put("age","basma2");
+                //newPost.put("sex","female");
+                current_user_db.push().setValue(product);
 
             }
         });
