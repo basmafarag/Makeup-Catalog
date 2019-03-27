@@ -122,7 +122,7 @@ public class authActivity extends AppCompatActivity implements
                             String User_Id=mAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
                             Map newPost=new HashMap<>();
-                            newPost.put("Username","basma2");
+                            newPost.put("userID",User_Id);
                             current_user_db.setValue(newPost);
 
                             updateUI(user);
@@ -170,7 +170,7 @@ public class authActivity extends AppCompatActivity implements
                             String User_Id=mAuth.getCurrentUser().getUid();
                             DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
                             Map newPost=new HashMap<>();
-                            newPost.put("Username","basma2");
+                            newPost.put("userID",User_Id);
                             current_user_db.setValue(newPost);
                             updateUI(user);
                         } else {

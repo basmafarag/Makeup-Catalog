@@ -20,12 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.content.Intent;
-
+import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
-
+import android.content.Context;
+//import com.firebase.ui.auth.AuthUI.getApplicationContext;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -112,9 +113,14 @@ public class ProductDetailsFragment extends Fragment {
 
                 String User_Id=mAuth.getCurrentUser().getUid();
                 DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
-               // Map newPost=new HashMap<>();
-                //newPost.put("age","basma2");
-                //newPost.put("sex","female");
+
+                Context context = getContext();
+                CharSequence text = "Your Product added Successfully";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                
                 current_user_db.push().setValue(product);
 
             }

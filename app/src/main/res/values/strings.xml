@@ -94,5 +94,7 @@
 
     <string name="basma" translatable="false">basma</string>
 
+    <string name="Favorites" translatable="false">Favorites</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

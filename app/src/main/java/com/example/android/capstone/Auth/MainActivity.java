@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.android.capstone.Adapters.CategoriesAdapter;
@@ -17,6 +18,7 @@ import com.example.android.capstone.ProductsList.ProductsActivity;
 import com.example.android.capstone.R;
 import com.example.android.capstone.Retrofit.ApiService;
 import com.example.android.capstone.Retrofit.RetroClient;
+import com.example.android.capstone.UI.FavoritesListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements
         View.OnClickListener, CategoriesAdapter.CategoriesOnClickHandler {
 
     authActivity authActivity=new authActivity();
+    FavoritesListActivity favoritesListActivity=new FavoritesListActivity();
     private List<Product> products;
     HashMap<String, List<Product>> Categories=new HashMap<>();
     private SwipeRefreshLayout swipeContainer;
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements
     CategoriesAdapter mCategoryAdapter;
     ProgressBar mProgressBar;
     private RecyclerView.LayoutManager mLayoutManager;
+    Button signOut;
+    Button favorites;
 
 
     private  List<Product> Product_type;
@@ -52,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements
 
         mRecyclerView= findViewById(R.id.category_list);
         mProgressBar= findViewById(R.id.pb_loading_indicator);
-
-
+        signOut=findViewById(R.id.signout);
+        favorites=findViewById(R.id.favorite_button);
         //----------------initRecyclerView-----------------------
         mCategoryAdapter = new CategoriesAdapter(this);
         mLayoutManager = new LinearLayoutManager(this);
@@ -71,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         //}
-        findViewById(R.id.signOutButton).setOnClickListener(this);
-
+        signOut.setOnClickListener(this);
+        favorites.setOnClickListener(this);
+        initSwipeContainerRefreshListener();
 
     }
 
@@ -129,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements
                // Log.d("recipeeee", t.getLocalizedMessage());
 
                 Log.e(this.getClass().getSimpleName(), t.toString());
-                //updateCategoriesViewsOnFailure();
+                updateCategoriesViewsOnFailure();
             }
         });
     }
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void onClick(View v) {
         int i = v.getId();
-       if (i == R.id.signOutButton) {
+       if (i == R.id.signout) {
 
            FirebaseAuth.getInstance().signOut();
            Intent intent=new Intent(MainActivity.this,authActivity.getClass());
@@ -146,13 +152,18 @@ public class MainActivity extends AppCompatActivity implements
            finish();
 
        }
+       if(i==R.id.favorite_button){
+           Intent intent=new Intent(MainActivity.this, favoritesListActivity.getClass());
+           startActivity(intent);
+           finish();
+       }
     }
 
     private void updateCategoryViewsOnSuccess() {
 
         mCategoryAdapter.notifyDataSetChanged();
-        //mProgressBar.setVisibility(View.INVISIBLE);
-      // swipeContainer.setRefreshing(false);
+        mProgressBar.setVisibility(View.INVISIBLE);
+        swipeContainer.setRefreshing(false);
 
 
     }
@@ -160,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements
     private void updateProductsTypeViewsOnSuccess() {
 
         mCategoryAdapter.notifyDataSetChanged();
-        //mProgressBar.setVisibility(View.INVISIBLE);
-        // swipeContainer.setRefreshing(false);
+        mProgressBar.setVisibility(View.INVISIBLE);
+         swipeContainer.setRefreshing(false);
 
 
     }
@@ -169,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements
     private void updateCategoriesViewsOnFailure() {
 
         mProgressBar.setVisibility(View.INVISIBLE);
-        //swipeContainer.setRefreshing(false);
+        swipeContainer.setRefreshing(false);
 
 
     }

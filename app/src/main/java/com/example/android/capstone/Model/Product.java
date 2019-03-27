@@ -86,6 +86,9 @@ public class Product implements Parcelable {
 
     public Product(){}
 
+    public Product(String name) {
+    }
+
 
     public int getId() {
         return id;
