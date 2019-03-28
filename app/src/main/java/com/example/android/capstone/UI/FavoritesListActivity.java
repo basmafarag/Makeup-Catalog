@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.capstone.Adapters.ProductsAdapter;
+import com.example.android.capstone.FavoritesWidget.FavoritesWidget;
 import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.ProductDetails.ProductDetailsActivity;
 import com.example.android.capstone.ProductsList.ProductsActivity;
@@ -35,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class FavoritesListActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "ViewDatabase";
+    public final static List<Product> products = new ArrayList<>();
 
 
     @Override
@@ -82,12 +85,13 @@ public class FavoritesListActivity extends AppCompatActivity {
         };
 
         fetch();
+        sendRecipeToWidget();
+
 
     }
 
     private void fetch() {
         Log.e("FavoritesListActivity", "uid " + mAuth.getCurrentUser().getUid());
-        final List<Product> products = new ArrayList<>();
 
         final ProductsAdapter productsAdapter = new ProductsAdapter(products);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FavoritesListActivity.this);
@@ -151,6 +155,14 @@ public class FavoritesListActivity extends AppCompatActivity {
 
         void onFavoriteSelected(String ProductIndex);
     }*/
+
+   private void sendRecipeToWidget() {
+        Intent intent = new Intent(this, FavoritesWidget.class);
+       Log.d("widgettttFavorite", String.valueOf(products));
+       intent.putExtra("myFavorites", (Serializable) products);
+        intent.setAction(getString(R.string.widget_intent_action));
+        sendBroadcast(intent);
+    }
     @Override
     public void onSaveInstanceState(Bundle outState) {
 

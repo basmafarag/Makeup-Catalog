@@ -52,7 +52,7 @@ public class ProductDetailsFragment extends Fragment {
     Button removeFavorites;
     String keyID;
     public FirebaseAuth mAuth;
-    HashMap<Product,List<String>> favoritesList=new HashMap<>();
+    static HashMap<String,List<String>> favoritesList=new HashMap<>();
 
     public ProductDetailsFragment() {
 
@@ -78,7 +78,7 @@ public class ProductDetailsFragment extends Fragment {
         if(savedInstanceState!=null) {
             product = savedInstanceState.getParcelable("selected_product");
             if (savedInstanceState.containsKey("kiki")) {
-                favoritesList = (HashMap<Product, List<String>>) savedInstanceState.getSerializable("kiki");
+                favoritesList = (HashMap<String, List<String>>) savedInstanceState.getSerializable("kiki");
             }
         }
         if(product!=null) {
@@ -116,30 +116,37 @@ public class ProductDetailsFragment extends Fragment {
             public void onClick(View v) {
 
 
-                String User_Id=mAuth.getCurrentUser().getUid();
-                DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
+                String User_Id = mAuth.getCurrentUser().getUid();
+                DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
 
                 Context context = getContext();
-                CharSequence text = "Your Product added Successfully";
                 int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
 
+                if (favoritesList.containsKey(product.getName())) {
+                    CharSequence text = "Product already exists";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                } else {
+
+                    CharSequence text="Your Product added Successfully";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
                 current_user_db.push().setValue(product, new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError,
                                            DatabaseReference databaseReference) {
-                         keyID = databaseReference.getKey();
+                        keyID = databaseReference.getKey();
 
 
-                        if(favoritesList.get(product)==null){
-                            List<String> keysList=new ArrayList<>();
+                        if (favoritesList.get(product) == null) {
+                            List<String> keysList = new ArrayList<>();
                             keysList.add(keyID);
-                            favoritesList.put(product,keysList);
-                        }else{
+                            favoritesList.put(product.getName(), keysList);
+                        } else {
 
-                           // favoritesList.get().add(products.get(i));
+                            // favoritesList.get().add(products.get(i));
 
                         }
 
@@ -147,10 +154,12 @@ public class ProductDetailsFragment extends Fragment {
 
                     }
                 });
+            }
 
 
             }
         });
+
 
         removeFavorites.setOnClickListener(new View.OnClickListener() {
 
@@ -161,18 +170,24 @@ public class ProductDetailsFragment extends Fragment {
                 DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
 
                 Context context = getContext();
-                CharSequence text = "Your Product removed Successfully";
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+                if(favoritesList.containsKey(product.getName())) {
+                    CharSequence text = "Your Product removed Successfully";
+                    int duration = Toast.LENGTH_SHORT;
 
-                Log.d(" bybybybb", String.valueOf(favoritesList));
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
 
-                current_user_db.child(favoritesList.get(product).get(0)).removeValue();
+                    current_user_db.child(favoritesList.get(product.getName()).get(0)).removeValue();
+                    favoritesList.remove(product.getName());
 
 
-
+                }else{
+                    CharSequence text = "Product is not on the list";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
         return rootView;

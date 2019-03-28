@@ -2,31 +2,42 @@ package com.example.android.capstone.FavoritesWidget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
+import com.example.android.capstone.UI.FavoritesListActivity;
 
-/**
- * Implementation of App Widget functionality.
- */
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 public class FavoritesWidget extends AppWidgetProvider {
+
+    static List<Product> productList=new ArrayList<>();
+    private static String text;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorites_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        views.setTextViewText(R.id.appwidget_text, text);
+
+        Intent intent = new Intent(context, FavoritesListActivity.class);
+        //intent.putExtra("myFavorites", (Serializable) productList);
+        views.setRemoteAdapter(R.id.lv_favorites_widget, intent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
@@ -34,12 +45,45 @@ public class FavoritesWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        Log.d("widgettttt   ", "recieved");
+
+        if (intent.hasExtra("myFavorites")) {
+            Log.d("widgettttt   ", "recieved iffffff");
+
+            //text = recipe.getName();
+
+            productList = (List<Product>) intent.getSerializableExtra("myFavorites");
+            Log.d("widgetttttbasma   ", ""+String.valueOf(productList));
+
+            for(Product ing : productList)
+            {
+                text += ing.getName();
+                text += "\n";
+            }
+        } else {
+            Log.d("widgettttt   ", ""+"elsepart");
+
+            //text = context.getString(R.string.no_recipe_selected);
+        }
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());
+        ComponentName thisWidget = new ComponentName(context.getApplicationContext(), FavoritesWidget.class);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.lv_favorites_widget);
+        if (appWidgetIds != null && appWidgetIds.length > 0) {
+            onUpdate(context, appWidgetManager, appWidgetIds);
+        }
+
+        super.onReceive(context, intent);
     }
 }
 
