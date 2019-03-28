@@ -1,7 +1,9 @@
 package com.example.android.capstone.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,25 +17,32 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.capstone.Adapters.ProductsAdapter;
 import com.example.android.capstone.Model.Product;
+import com.example.android.capstone.ProductDetails.ProductDetailsActivity;
+import com.example.android.capstone.ProductsList.ProductsActivity;
 import com.example.android.capstone.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavoritesListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private FirebaseRecyclerAdapter adapter;
+    public String mProductIndex;
 
 
     public FirebaseAuth mAuth;
@@ -46,6 +55,7 @@ public class FavoritesListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
+        //FavoritesListActivity f = (ProductsActivity) getActivity();
 
         recyclerView=findViewById(R.id.rv_Favorite_List);
 
@@ -63,11 +73,9 @@ public class FavoritesListActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    toastMessage("Successfully signed in with: " + user.getEmail());
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    toastMessage("Successfully signed out.");
                 }
                 // ...
             }
@@ -75,95 +83,74 @@ public class FavoritesListActivity extends AppCompatActivity {
 
         fetch();
 
-           }
+    }
 
     private void fetch() {
-        Query query = FirebaseDatabase.getInstance()
+        Log.e("FavoritesListActivity", "uid " + mAuth.getCurrentUser().getUid());
+        final List<Product> products = new ArrayList<>();
+
+        final ProductsAdapter productsAdapter = new ProductsAdapter(products);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(FavoritesListActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(productsAdapter);
+        recyclerView.setHasFixedSize(false);
+
+        FirebaseDatabase.getInstance()
                 .getReference()
-                .child("Users").child(mAuth.getCurrentUser().getUid()).child("Products");
-
-        FirebaseRecyclerOptions<Product> options =
-                new FirebaseRecyclerOptions.Builder<Product>()
-                        .setQuery(query, new SnapshotParser<Product>() {
-                            @NonNull
-                            @Override
-                            public Product parseSnapshot(@NonNull DataSnapshot snapshot) {
-                                return new Product();
-                            }
-                        })
-                        .build();
-        Log.d(" Optionssss", String.valueOf(options.getSnapshots()));
-
-        adapter = new FirebaseRecyclerAdapter<Product, ViewHolder>(options) {
+                .child("Users").child(mAuth.getCurrentUser().getUid()).child("Products").addChildEventListener(new ChildEventListener() {
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.product_item, parent, false);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Product product = dataSnapshot.getValue(Product.class);
 
-                return new ViewHolder(view);
+                Log.e("FavoritesListActivity", "listener  " +
+                        product.getDescripition());
+                products.add(product);
+
+                productsAdapter.notifyDataSetChanged();
             }
 
-
             @Override
-            protected void onBindViewHolder(ViewHolder holder, final int position, Product product) {
-                holder.setTxtTitle(product.getName());
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                holder.root.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(FavoritesListActivity.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
 
-        };
-        recyclerView.setAdapter(adapter);
-    }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
 
+            }
 
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
-
-
-    /**
-     * customizable toast
-     * @param message
-     */
-    private void toastMessage(String message){
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout root;
-        public TextView txtTitle;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            root = itemView.findViewById(R.id.list_root);
-            txtTitle = itemView.findViewById(R.id.tv_product);
-        }
-
-        public void setTxtTitle(String string) {
-            txtTitle.setText(string);
-        }
+            }
+        });
 
 
     }
 
+    /*@Override
+    public void onFavoriteSelected(String ProductIndex) {
+        this.mProductIndex=ProductIndex;
+
+        Intent intent = new Intent(this, ProductDetailsActivity.class);
+        selectedProduct=Categories.get(mProductType).get(Integer.parseInt(mProductIndex));
+
+        intent.putExtra(getString(R.string.selected_product),selectedProduct);
+
+        startActivity(intent);
+
+    }
+
+    public interface OnFavoriteClickListener {
+
+        void onFavoriteSelected(String ProductIndex);
+    }*/
     @Override
     public void onSaveInstanceState(Bundle outState) {
 

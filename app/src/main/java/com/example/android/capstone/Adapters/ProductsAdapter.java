@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.ProductsList.ProductsFragment;
 import com.example.android.capstone.R;
+import com.example.android.capstone.UI.FavoritesListActivity;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
     private Context context;
     private static ProductsFragment.OnProductClickListener onProductClickListener;
+    //private static FavoritesListActivity.OnFavoriteClickListener onFavoriteClickListener;
+
     private String mProductType;
     private List<Product> PRODUCTS;
 
@@ -27,6 +30,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
         ProductsAdapter.onProductClickListener=onProductClickListener;
         this.mProductType=mProductType;
     }
+    public ProductsAdapter(List<Product>PRODUCTS){
+        this.PRODUCTS=PRODUCTS;
+       // this.onFavoriteClickListener=onFavoriteClickListener;
+    }
+
 
     @NonNull
     @Override
@@ -71,6 +79,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
 
             String adapterPosition= String.valueOf(getAdapterPosition());
             onProductClickListener.onProductSelected(adapterPosition);
+           // onFavoriteClickListener.onFavoriteSelected(adapterPosition);
 
         }
 

@@ -16,7 +16,9 @@ import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
 import android.view.View.OnClickListener;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Intent;
@@ -47,8 +49,10 @@ public class ProductDetailsFragment extends Fragment {
     ImageView productImage;
     Button buyNow;
     Button favorites;
-
+    Button removeFavorites;
+    String keyID;
     public FirebaseAuth mAuth;
+    HashMap<Product,List<String>> favoritesList=new HashMap<>();
 
     public ProductDetailsFragment() {
 
@@ -68,10 +72,14 @@ public class ProductDetailsFragment extends Fragment {
         productImage=rootView.findViewById(R.id.iv_product_image);
         buyNow=rootView.findViewById(R.id.bv_buy_button);
         favorites=rootView.findViewById(R.id.bv_favourite_button);
+        removeFavorites=rootView.findViewById(R.id.bv_remove_favorite_button);
 
         mAuth =FirebaseAuth.getInstance();
-        if(savedInstanceState!=null){
-            product=savedInstanceState.getParcelable("selected_product");
+        if(savedInstanceState!=null) {
+            product = savedInstanceState.getParcelable("selected_product");
+            if (savedInstanceState.containsKey("kiki")) {
+                favoritesList = (HashMap<Product, List<String>>) savedInstanceState.getSerializable("kiki");
+            }
         }
         if(product!=null) {
             productName.setText(product.getName());
@@ -102,14 +110,11 @@ public class ProductDetailsFragment extends Fragment {
             });
         }
 
-        //CurrentUser=intent.ge
         favorites.setOnClickListener(new View.OnClickListener() {
-//            intent.putExtra("Current_User",mAuth.getCurrentUser());
+
             @Override
             public void onClick(View v) {
 
-                //Bundle bundle=getArguments();
-                //String User_Id=bundle.getString("Current_User");
 
                 String User_Id=mAuth.getCurrentUser().getUid();
                 DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
@@ -120,8 +125,53 @@ public class ProductDetailsFragment extends Fragment {
 
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
-                
-                current_user_db.push().setValue(product);
+
+                current_user_db.push().setValue(product, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError,
+                                           DatabaseReference databaseReference) {
+                         keyID = databaseReference.getKey();
+
+
+                        if(favoritesList.get(product)==null){
+                            List<String> keysList=new ArrayList<>();
+                            keysList.add(keyID);
+                            favoritesList.put(product,keysList);
+                        }else{
+
+                           // favoritesList.get().add(products.get(i));
+
+                        }
+
+                        Log.d(" bybybybb11", String.valueOf(favoritesList));
+
+                    }
+                });
+
+
+            }
+        });
+
+        removeFavorites.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                String User_Id=mAuth.getCurrentUser().getUid();
+                DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id).child("Products");
+
+                Context context = getContext();
+                CharSequence text = "Your Product removed Successfully";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+
+                Log.d(" bybybybb", String.valueOf(favoritesList));
+
+                current_user_db.child(favoritesList.get(product).get(0)).removeValue();
+
+
 
             }
         });
@@ -131,9 +181,11 @@ public class ProductDetailsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putParcelable("selected_product", product);
-
+        if(favoritesList!=null) {
+            outState.putSerializable("kiki", favoritesList);
+        }
+        super.onSaveInstanceState(outState);
 
     }
 

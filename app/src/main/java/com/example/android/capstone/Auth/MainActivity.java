@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements
                     }else{
 
                         Categories.get(products.get(i).getProduct_type()).add(products.get(i));
+
                     }
 
                 }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Product implements Parcelable {
 
-    private int id;
+    private String id;
 
     @SerializedName("brand")
     @Expose
@@ -22,7 +22,7 @@ public class Product implements Parcelable {
 
     @SerializedName("price")
     @Expose
-    private Double price;
+    private String price;
 
     @SerializedName("price_sign")
     @Expose
@@ -89,9 +89,27 @@ public class Product implements Parcelable {
     public Product(String name) {
     }
 
+    public Product(String api_featured_image, String brand, String created_at, String currency, String descripition, String id, String image_link, String name, String price, String price_sign, String product_api_url, String product_link, String product_type, String updated_at, String website_link) {
+        this.api_featured_image=api_featured_image;
+        this.brand=brand;
+        this.created_at=created_at;
+        this.currency=currency;
+        this.descripition=descripition;
+        this.id=id;
+        this.image_link=image_link;
+        this.name=name;
+        this.price=price;
+        this.price_sign=price_sign;
+        this.product_api_url=product_api_url;
+        this.product_link=product_link;
+        this.product_type=product_type;
+        this.updated_at=updated_at;
+        this.website_link=website_link;
+    }
+
 
     public int getId() {
-        return id;
+        return Integer.parseInt(id);
     }
 
     public String getBrand() {
@@ -103,7 +121,7 @@ public class Product implements Parcelable {
     }
 
     public Double getPrice() {
-        return price;
+        return Double.valueOf(price);
     }
 
     public String getPrice_sign() {
@@ -171,7 +189,7 @@ public class Product implements Parcelable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = String.valueOf(id);
     }
 
     public void setBrand(String brand) {
@@ -183,7 +201,7 @@ public class Product implements Parcelable {
     }
 
     public void setPrice(Double price) {
-        this.price = price;
+        this.price = String.valueOf(price);
     }
 
     public void setPrice_sign(String price_sign) {
@@ -247,13 +265,13 @@ public class Product implements Parcelable {
     }
 
     protected Product(Parcel in) {
-        id = in.readInt();
+        id = String.valueOf(in.readInt());
         brand = in.readString();
         name = in.readString();
         if (in.readByte() == 0) {
             price = null;
         } else {
-            price = in.readDouble();
+            price = String.valueOf(in.readDouble());
         }
         price_sign = in.readString();
         currency = in.readString();
@@ -290,14 +308,14 @@ public class Product implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeInt(Integer.parseInt(id));
         dest.writeString(brand);
         dest.writeString(name);
         if (price == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
-            dest.writeDouble(price);
+            dest.writeDouble(Double.parseDouble(price));
         }
         dest.writeString(price_sign);
         dest.writeString(currency);
