@@ -120,16 +120,16 @@ public class authActivity extends AppCompatActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             String User_Id=mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
+                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child(String.valueOf(R.string.Users)).child(User_Id);
                             Map newPost=new HashMap<>();
-                            newPost.put("userID",User_Id);
+                            newPost.put(getString(R.string.userID),User_Id);
                             current_user_db.setValue(newPost);
 
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(R.id.main_layout), R.string.Authentication_Failed, Snackbar.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
@@ -143,7 +143,7 @@ public class authActivity extends AppCompatActivity implements
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-      //  Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
+        //  Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
 
         updateUI(currentUser);
     }
@@ -155,7 +155,7 @@ public class authActivity extends AppCompatActivity implements
             return;
         }
 
-      //  showProgressDialog();
+        //  showProgressDialog();
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -168,21 +168,21 @@ public class authActivity extends AppCompatActivity implements
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             String User_Id=mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child("Users").child(User_Id);
+                            DatabaseReference current_user_db=FirebaseDatabase.getInstance().getReference().child(String.valueOf(R.string.Users)).child(User_Id);
                             Map newPost=new HashMap<>();
-                            newPost.put("userID",User_Id);
+                            newPost.put(getString(R.string.userID),User_Id);
                             current_user_db.setValue(newPost);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(authActivity.this, "Authentication failed.",
+                            Toast.makeText(authActivity.this, R.string.Authentication_Failed,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
                         // [START_EXCLUDE]
-                      //  hideProgressDialog();
+                        //  hideProgressDialog();
                         // [END_EXCLUDE]
                     }
                 });
@@ -195,7 +195,7 @@ public class authActivity extends AppCompatActivity implements
             return;
         }
 
-       // showProgressDialog();
+        // showProgressDialog();
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
@@ -210,7 +210,7 @@ public class authActivity extends AppCompatActivity implements
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(authActivity.this, "Authentication failed.",
+                            Toast.makeText(authActivity.this, R.string.Authentication_Failed,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -219,7 +219,7 @@ public class authActivity extends AppCompatActivity implements
                         if (!task.isSuccessful()) {
                             mStatusTextView.setText(R.string.auth_failed);
                         }
-                //        hideProgressDialog();
+                        //        hideProgressDialog();
                         // [END_EXCLUDE]
                     }
                 });
@@ -256,7 +256,7 @@ public class authActivity extends AppCompatActivity implements
     }
 
     private void updateUI(FirebaseUser user) {
-     //   hideProgressDialog();
+        //   hideProgressDialog();
         if (user != null) {
 
            /* ProductDetailsFragment productDetailsFragment =new ProductDetailsFragment();
@@ -266,8 +266,8 @@ public class authActivity extends AppCompatActivity implements
             */
 
             Intent intent = new Intent(authActivity.this, MainActivity.class);
-            intent.putExtra("Current_User",mAuth.getCurrentUser());
-             Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
+            intent.putExtra(getString(R.string.Current_User),mAuth.getCurrentUser());
+            Log.d("AuthBasma", String.valueOf(mAuth.getCurrentUser().getUid()));
             startActivity(intent);
             finish();
 
@@ -282,14 +282,14 @@ public class authActivity extends AppCompatActivity implements
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
             findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
         */
-           // findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
+            // findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
         } else {
             //mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
-           // findViewById(R.id.signedInButtons).setVisibility(View.GONE);
+            // findViewById(R.id.signedInButtons).setVisibility(View.GONE);
         }
     }
 

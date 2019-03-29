@@ -56,12 +56,12 @@ public class FavoritesWidget extends AppWidgetProvider {
 
         Log.d("widgettttt   ", "recieved");
 
-        if (intent.hasExtra("myFavorites")) {
+        if (intent.hasExtra(String.valueOf(R.string.myFavorites))) {
             Log.d("widgettttt   ", "recieved iffffff");
 
             //text = recipe.getName();
 
-            productList = (List<Product>) intent.getSerializableExtra("myFavorites");
+            productList = (List<Product>) intent.getSerializableExtra(String.valueOf(R.string.myFavorites));
             Log.d("widgetttttbasma   ", ""+String.valueOf(productList));
 
             for(Product ing : productList)
@@ -72,7 +72,6 @@ public class FavoritesWidget extends AppWidgetProvider {
         } else {
             Log.d("widgettttt   ", ""+"elsepart");
 
-            //text = context.getString(R.string.no_recipe_selected);
         }
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context.getApplicationContext());

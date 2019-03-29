@@ -64,7 +64,7 @@ public class ProductDetailsFragment extends Fragment {
 
 
         View rootView=inflater.inflate(R.layout.fragment_product_details,container,false);
-        product=(Product)getArguments().getParcelable("selected_product");
+        product=(Product)getArguments().getParcelable(getString(R.string.selected_product));
 
         productName=rootView.findViewById(R.id.tv_product_title);
         productPrice=rootView.findViewById(R.id.tv_price);
@@ -76,8 +76,8 @@ public class ProductDetailsFragment extends Fragment {
 
         mAuth =FirebaseAuth.getInstance();
         if(savedInstanceState!=null) {
-            product = savedInstanceState.getParcelable("selected_product");
-            if (savedInstanceState.containsKey("kiki")) {
+            product = savedInstanceState.getParcelable(getString(R.string.selected_product));
+            if (savedInstanceState.containsKey(getString(R.string.kiki))) {
                 favoritesList = (HashMap<String, List<String>>) savedInstanceState.getSerializable("kiki");
             }
         }
@@ -196,9 +196,9 @@ public class ProductDetailsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable("selected_product", product);
+        outState.putParcelable(getString(R.string.selected_product), product);
         if(favoritesList!=null) {
-            outState.putSerializable("kiki", favoritesList);
+            outState.putSerializable(getString(R.string.kiki), favoritesList);
         }
         super.onSaveInstanceState(outState);
 

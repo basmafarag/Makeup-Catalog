@@ -103,4 +103,18 @@
     <string name="widget_intent_action" translatable="false">android.appwidget.action.APPWIDGET_UPDATE</string>
     <string name="widget_item_format">%1$d. %2$s</string>
 
+    <string name="userID" translatable="false">userID</string>
+    <string name="Users" translatable="false">Users</string>
+    <string name="Current_User" translatable="false">Current_User</string>
+    <string name="myFavorites" translatable="false">myFavorites</string>
+
+    <string name="details_product_content_description" translatable="false">details_product_content_description</string>
+    <string name="brand_banner" translatable="false">brand_banner</string>
+
+    <string name="Description" translatable="false">Description</string>
+    <string name="BuyNow" translatable="false">BuyNow</string>
+    <string name="Add_to_favorites" translatable="false">Add to favorites</string>
+    <string name="remove_from_favorites" translatable="false">Remove from favorites</string>
+    <string name="kiki" translatable="false">kiki</string>
+    <string name="Authentication_Failed" translatable="false">Authentication Failed.</string>
 </resources>

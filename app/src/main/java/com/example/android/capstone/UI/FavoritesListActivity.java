@@ -8,33 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.capstone.Adapters.ProductsAdapter;
 import com.example.android.capstone.FavoritesWidget.FavoritesWidget;
 import com.example.android.capstone.Model.Product;
-import com.example.android.capstone.ProductDetails.ProductDetailsActivity;
-import com.example.android.capstone.ProductsList.ProductsActivity;
 import com.example.android.capstone.R;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +28,6 @@ public class FavoritesListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    public String mProductIndex;
 
 
     public FirebaseAuth mAuth;
@@ -58,7 +41,6 @@ public class FavoritesListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
-        //FavoritesListActivity f = (ProductsActivity) getActivity();
 
         recyclerView=findViewById(R.id.rv_Favorite_List);
 
@@ -138,28 +120,11 @@ public class FavoritesListActivity extends AppCompatActivity {
 
     }
 
-    /*@Override
-    public void onFavoriteSelected(String ProductIndex) {
-        this.mProductIndex=ProductIndex;
-
-        Intent intent = new Intent(this, ProductDetailsActivity.class);
-        selectedProduct=Categories.get(mProductType).get(Integer.parseInt(mProductIndex));
-
-        intent.putExtra(getString(R.string.selected_product),selectedProduct);
-
-        startActivity(intent);
-
-    }
-
-    public interface OnFavoriteClickListener {
-
-        void onFavoriteSelected(String ProductIndex);
-    }*/
 
    private void sendRecipeToWidget() {
         Intent intent = new Intent(this, FavoritesWidget.class);
        Log.d("widgettttFavorite", String.valueOf(products));
-       intent.putExtra("myFavorites", (Serializable) products);
+       intent.putExtra(String.valueOf(R.string.myFavorites), (Serializable) products);
         intent.setAction(getString(R.string.widget_intent_action));
         sendBroadcast(intent);
     }

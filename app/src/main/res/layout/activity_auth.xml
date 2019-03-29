@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/nyx"/>
+            android:src="@drawable/nyx"
+            android:contentDescription="@string/brand_banner"/>
 
         <TextView
             android:id="@+id/status"

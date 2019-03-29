@@ -36,7 +36,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
         Intent intent=getIntent();
 
         if(intent.hasExtra(getString(R.string.selected_product))){
-            mSelectedProduct=intent.getParcelableExtra("selected_product");
+            mSelectedProduct=intent.getParcelableExtra(getString(R.string.selected_product));
             Log.d(" Intent", String.valueOf(intent.getData()));
 
         }else{
@@ -45,13 +45,13 @@ public class ProductDetailsActivity extends AppCompatActivity{
         }
 
         
-        if(intent.hasExtra("Current_User")){
+        if(intent.hasExtra(getString(R.string.Current_User))){
             //            intent.putExtra("Current_User",mAuth.getCurrentUser());
             //CurrentUser=intent.getExtras("")
         }
         ProductDetailsFragment productDetailsFragment=new ProductDetailsFragment();
         Bundle args=new Bundle();
-        args.putParcelable("selected_product", mSelectedProduct);
+        args.putParcelable(getString(R.string.selected_product), mSelectedProduct);
         productDetailsFragment.setArguments(args);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -66,11 +66,7 @@ public class ProductDetailsActivity extends AppCompatActivity{
 
     }
 
-        /* FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!");
-        */
 
 
     public void onSaveInstanceState(@NonNull Bundle outState) {

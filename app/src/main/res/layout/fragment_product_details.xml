@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,7 +13,8 @@
             android:id="@+id/iv_product_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:contentDescription="@string/details_product_content_description"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description"/>
+            android:text="@string/Description"/>
         <TextView
             android:id="@+id/tv_product_descripition"
             android:layout_width="match_parent"
@@ -60,19 +60,19 @@
             android:id="@+id/bv_buy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Buy now"/>
+            android:text="@string/BuyNow"/>
 
         <Button
             android:id="@+id/bv_favourite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add to favorites"/>
+            android:text="@string/Add_to_favorites"/>
 
         <Button
             android:id="@+id/bv_remove_favorite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add to favorites"/>
+            android:text="@string/remove_from_favorites"/>
 
     </LinearLayout>
 

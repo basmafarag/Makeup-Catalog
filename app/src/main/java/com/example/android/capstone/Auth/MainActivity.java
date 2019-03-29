@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements
     Button favorites;
 
 
-    private  List<Product> Product_type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,9 +122,6 @@ public class MainActivity extends AppCompatActivity implements
 
 
                 CategoriesAdapter.Categories_names= Categories_names;
-               // Log.d("recipeeee", String.valueOf(Categories.get("eyeshadow")));
-
-               // ProductsAdapter.Products=Categories;
 
                 updateCategoryViewsOnSuccess();
                 updateProductsTypeViewsOnSuccess();
@@ -133,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-               // Log.d("recipeeee", t.getLocalizedMessage());
 
                 Log.e(this.getClass().getSimpleName(), t.toString());
                 updateCategoriesViewsOnFailure();

@@ -32,7 +32,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ViewHo
     }
     public ProductsAdapter(List<Product>PRODUCTS){
         this.PRODUCTS=PRODUCTS;
-       // this.onFavoriteClickListener=onFavoriteClickListener;
+       // ProductsAdapter.onProductClickListener=onProductClickListener;
+
+        // this.onFavoriteClickListener=onFavoriteClickListener;
     }
 
 
