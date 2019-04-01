@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.example.android.capstone.Adapters.CategoriesAdapter;
+import com.example.android.capstone.FavoritesWidget.FavoritesWidget;
 import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.ProductsList.ProductsActivity;
 import com.example.android.capstone.R;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +151,8 @@ public class MainActivity extends AppCompatActivity implements
 
        }
        if(i==R.id.favorite_button){
+          // sendRecipeToWidget();
+
            Intent intent=new Intent(MainActivity.this, favoritesListActivity.getClass());
            startActivity(intent);
            finish();
@@ -192,6 +196,8 @@ public class MainActivity extends AppCompatActivity implements
         startActivity(intent);
 
     }
+
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

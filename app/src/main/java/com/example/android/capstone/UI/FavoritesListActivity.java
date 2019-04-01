@@ -1,5 +1,6 @@
 package com.example.android.capstone.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.example.android.capstone.Adapters.ProductsAdapter;
 import com.example.android.capstone.FavoritesWidget.FavoritesWidget;
 import com.example.android.capstone.Model.Product;
 import com.example.android.capstone.R;
+import com.example.android.capstone.SyncAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -33,7 +35,7 @@ public class FavoritesListActivity extends AppCompatActivity {
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "ViewDatabase";
-    public final static List<Product> products = new ArrayList<>();
+    public static final  List<Product> products = new ArrayList<>();
 
 
     @Override
@@ -67,7 +69,13 @@ public class FavoritesListActivity extends AppCompatActivity {
         };
 
         fetch();
-        sendRecipeToWidget();
+        Intent intent=getIntent();
+        if(intent.hasExtra(String.valueOf(R.string.myFavorites))) {
+            sendRecipeToWidget();
+        }
+
+        SyncAdapter sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+
 
 
     }
@@ -91,7 +99,7 @@ public class FavoritesListActivity extends AppCompatActivity {
                 Log.e("FavoritesListActivity", "listener  " +
                         product.getDescripition());
                 products.add(product);
-
+                sendRecipeToWidget();
                 productsAdapter.notifyDataSetChanged();
             }
 
@@ -119,15 +127,14 @@ public class FavoritesListActivity extends AppCompatActivity {
 
 
     }
-
-
-   private void sendRecipeToWidget() {
+    private void sendRecipeToWidget() {
         Intent intent = new Intent(this, FavoritesWidget.class);
-       Log.d("widgettttFavorite", String.valueOf(products));
-       intent.putExtra(String.valueOf(R.string.myFavorites), (Serializable) products);
+        Log.d("widgettttFavorite", String.valueOf(products));
+        intent.putExtra(String.valueOf(R.string.myFavorites), (Serializable) FavoritesListActivity.products);
         intent.setAction(getString(R.string.widget_intent_action));
         sendBroadcast(intent);
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
